@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2d 反弹球</title>
+</head>
+<style>
+    *{
+        padding:0;
+        margin:0;
+    }
+    canvas { background: #eee; display: block; margin: 0 auto; }
+</style>
+<body>
+    <canvas id="myCanvas" width="480" height="320"></canvas>
+</body>
+<script>
+    //dom select
+    var canvas = document.getElementById("myCanvas")
+    var context = canvas.getContext('2d');
+    //draw a rect
+    context.beginPath();
+    context.rect(20,40,50,50);
+    context.fillStyle = "#FF0000";
+    context.fill();
+    context.closePath();
+
+    //draw a circle
+    context.beginPath();
+    context.arc(240,160,20,0,Math.PI*2,false);
+    context.fillStyle = "green";
+    context.fill();
+    context.closePath();
+
+</script>
+</html>
