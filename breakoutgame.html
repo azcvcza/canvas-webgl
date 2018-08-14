@@ -47,7 +47,7 @@
     var brickPadding = 10;
     var brickOffsetTop = 30;
     var brickOffsetLeft = 30;
-    
+
     //build brick array
     var bricks = [];
     for (var c = 0; c < brickColumnCount; c++) {
@@ -55,7 +55,8 @@
         for (var r = 0; r < brickRowCount; r++) {
             bricks[c][r] = {
                 x: 0,
-                y: 0
+                y: 0,
+                status: 1
             };
         }
     }
@@ -77,6 +78,39 @@
             leftPressed = false;
         }
     }
+
+    function collisionDetection() {
+        for (var c = 0; c < brickColumnCount; c++) {
+            for (var r = 0; r < brickRowCount; r++) {
+                var b = bricks[c][r];
+                if (b.status == 1) {
+                    if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+                        dy = -dy;
+                        b.status = 0;
+                    }
+                }
+            }
+        }
+    }
+    function winChecked(){
+        var counter = 0;
+        for (var c = 0; c < brickColumnCount; c++) {
+            for (var r = 0; r < brickRowCount; r++) {
+                var b = bricks[c][r];
+                
+                if (b.status == 0) {
+
+                    counter++;
+                    console.log(counter,brickColumnCount*brickRowCount)
+                    if(counter >1){
+                        alert("You win");
+                        clearInterval(game);
+                        setInterval(draw,10)
+                    }
+                }
+            }
+        }
+    }
     //draw ball
     function drawBall() {
         context.beginPath();
@@ -95,26 +129,37 @@
     }
     //draw bricks
     function drawBricks() {
-    for(var c=0; c<brickColumnCount; c++) {
-        for(var r=0; r<brickRowCount; r++) {
-            var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
-            var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
-            bricks[c][r].x = brickX;
-            bricks[c][r].y = brickY;
-            context.beginPath();
-            context.rect(brickX, brickY, brickWidth, brickHeight);
-            context.fillStyle = "#0095DD";
-            context.fill();
-            context.closePath();
+        for (var c = 0; c < brickColumnCount; c++) {
+            for (var r = 0; r < brickRowCount; r++) {
+                var brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+                var brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+                bricks[c][r].x = brickX;
+                bricks[c][r].y = brickY;
+
+                if (bricks[c][r].status == 1) {
+                    context.beginPath();
+                    context.rect(brickX, brickY, brickWidth, brickHeight);
+                    context.fillStyle = "#0095DD";
+                    context.fill();
+                    context.closePath();
+                } else {
+                    context.beginPath();
+                    context.rect(brickX, brickY, brickWidth, brickHeight);
+                    context.fillStyle = "#eeeeee";
+                    context.fill();
+                    context.closePath();
+                }
+            }
         }
     }
-}
     //main draw loop
     function draw() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         drawBricks();
         drawBall();
         drawPaddle();
+        collisionDetection();
+        winChecked();
         //ball dectect
         if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
             dx = -dx;
@@ -146,7 +191,7 @@
         y += dy;
     }
 
-    setInterval(draw, 10);
+    var game = setInterval(draw, 10);
 </script>
 
 </html>
