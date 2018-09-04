@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,47 @@
 <style>
 
 </style>
+
 <body>
     <canvas id="canvas" width="500" height="500"></canvas>
 </body>
+<script>
+    var data = [16, 68, 20, 30, 54];
+    var labels = ["JAN", "FEB", "MAR", "APR", "MAY"];
+    var canvas = document.getElementById("canvas");
+    var c = canvas.getContext('2d');
+
+    c.fillStyle = "blue";
+    //make bar
+    for (var i = 0; i < data.length; i++) {
+        var dp = data[i];
+        // 500 represents the chart height;
+        c.fillRect(25 + i * 100, 500 - dp * 5 - 30, 50, dp * 5);
+    }
+    //draw axis lines
+    c.fillStyle = "black";
+    c.lineWidth = 2.0;
+    c.beginPath();
+    c.moveTo(20, 10);
+    c.lineTo(20, 475);
+    c.lineTo(490, 475);
+    c.stroke();
+
+    //draw text and vertical lines 
+    c.fillStyle = "black";
+    for (var i = 0; i < 6; i++) {
+        c.fillText((5 - i) * 20 + "", 4, i * 80 + 60);
+        c.beginPath();
+        c.moveTo(25, i * 80 + 60);
+        c.lineTo(30, i * 80 + 60);
+        c.stroke();
+    }
+
+    
+    //draw horiz text 
+    for (var i = 0; i < 5; i++) {
+        c.fillText(labels[i], 50 + i * 100, 491);
+    }
+</script>
+
 </html>
